@@ -1,0 +1,10 @@
+{
+  "new_message": [
+    {
+      "quotes": [
+        "расписание"
+      ],
+      "action": "schedule_new"
+    }
+  ]
+}

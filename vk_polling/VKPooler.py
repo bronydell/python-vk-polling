@@ -1,6 +1,7 @@
 from enum import Enum
 from vk_polling import Longpoolserver as poll
 import logging
+import traceback
 functions = {}
 
 def addHandler(code, function):
@@ -45,17 +46,22 @@ errors = {Errors.HISTORY_FAILED: 'Error with history ot ts event',
 def startPooling(api):
     server = poll.getLongPoolServer(api)
     while True:
-        answ = server.pool()
-        print(answ)
-        if 'error' in answ:
-            for error in Errors:
-                if error.value == answ['error']:
-                    logging.error(errors[error.value])
-        else:
-            for update in answ['updates']:
-                for code in Codes:
-                    if update[0] == code.value:
-                        if code.value in functions:
-                            for function in functions[code.value]:
-                                function(api, update)
+        try:
+            answ = server.pool()
+            logging.info(answ)
+            if 'error' in answ:
+                for error in Errors:
+                    if error.value == answ['error']:
+                        logging.error(errors[error.value])
+            else:
+                for update in answ['updates']:
+                    for code in Codes:
+                        if update[0] == code.value:
+                            if code.value in functions:
+                                for function in functions[code.value]:
+                                    function(api, update)
+        except Exception as ex:
+            print(traceback.format_exc())
+
+
 
