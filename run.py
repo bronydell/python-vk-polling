@@ -5,6 +5,8 @@ import saver
 from vk_polling import VKPooler
 from vk_polling.VKPooler import Codes
 import msce_getter as msce
+
+app_id = 5037590
 logging.basicConfig(level=logging.CRITICAL)
 
 def getSettings():
@@ -33,10 +35,9 @@ def online(api, update):
 if saver.openPref('me', 'login', None) is None:
     login = input('Number or email: ')
     password = input('Password: ')
-
-login = saver.openPref('me', 'login', None)
-password = saver.openPref('me', 'password', None)
-app_id = 5037590
+else:
+    login = saver.openPref('me', 'login', None)
+    password = saver.openPref('me', 'password', None)
 
 try:
     api = vk_requests.create_api(app_id=app_id, login=login,
