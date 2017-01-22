@@ -34,4 +34,4 @@ def parseGroup(group):
                 s = s + '                                                  \n'
         return s
     else:
-        return 'Что-то тут не так'
+        return 'Либо такой группы нет, либо сервер упал, либо Тоха питух'

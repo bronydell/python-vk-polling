@@ -24,9 +24,10 @@ def message(api, update):
         for quote in setting['quotes']:
             if quote in str(update[6]).lower():
                 group = '17'
-                if len(str(update[6]).split(' ')) == 2:
+                if len(str(update[6]).lower().split(quote)) > 1:
                     group = str(update[6]).lower().split(quote)[1]
-                    group = str(group).split(' ')[1]
+                    if len(str(group).split(' ')) >= 2:
+                        group = str(group).split(' ')[1]
                 api.messages.send(peer_id=update[3], message=msce.parseGroup(group))
 
 def online(api, update):
