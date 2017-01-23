@@ -13,7 +13,8 @@ class LongPoolServer:
         session = requests.session()
         answer = session.get(self.getPoolURL(), timeout=27.0)
         if answer.status_code == 200:
-            self.ts = answer.json()['ts']
+            if 'ts' in answer.json():
+                self.ts = answer.json()['ts']
             return answer.json()
         else:
             raise Exception(

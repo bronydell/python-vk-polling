@@ -53,6 +53,7 @@ def startPooling(api):
                 for error in Errors:
                     if error.value == answ['error']:
                         logging.error(errors[error.value])
+                        server = poll.getLongPoolServer(api)
             else:
                 for update in answ['updates']:
                     for code in Codes:
@@ -61,6 +62,7 @@ def startPooling(api):
                                 for function in functions[code.value]:
                                     function(api, update)
         except Exception as ex:
+            server = poll.getLongPoolServer(api)
             print(traceback.format_exc())
 
 
