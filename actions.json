@@ -1,6 +1,10 @@
 {
+  "admin_ids":[
+    "39336047"
+  ],
   "messages":{
-    "curator_number": "+375336650034"
+    "curator_number": "+375336650034",
+    "not_admin": "Вы не админ"
   },
 
   "new_message": [
@@ -12,9 +16,15 @@
     },
     {
       "quotes": [
-        "логи"
+        "настройки"
       ],
-      "action": "logs_send"
+      "action": "settings_get"
+    },
+    {
+      "quotes": [
+        "обновить настройки"
+      ],
+      "action": "settings_send"
     },
     {
       "quotes": [

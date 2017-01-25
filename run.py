@@ -1,6 +1,7 @@
 import vk_requests
-import logging
+import requests
 import json
+from shutil import move
 import saver
 from vk_polling import VKPooler
 from vk_polling.VKPooler import Codes
@@ -8,7 +9,6 @@ import msce_getter as msce
 import sender
 
 app_id = 5037590
-logging.basicConfig(level=logging.ERROR, filename='logs.txt')
 
 permissions = ['offline', 'messages', 'docs']
 
@@ -17,8 +17,27 @@ def getSettings():
         with open('actions.json', encoding='UTF-8') as data_file:
             data = json.load(data_file)
             return data
+    except ValueError:
+        return None
     except Exception as ex:
         print(ex.__str__())
+
+
+def saveDoc(api, update):
+    if len(update) > 7:
+        for i in range(1, 11):
+            if 'attach{}_type'.format(str(i)) in update[7]:
+                if update[7]['attach{}_type'.format(str(i))] == 'doc':
+                    resp = api.docs.getById(docs=update[7]['attach{}'.format(str(i))])
+                    r = requests.get(resp[0]['url'], stream=True)
+                    if r.status_code == 200:
+                        move('actions.json', 'actions_old.json')
+                        with open('actions.json', 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=1024):
+                                if chunk:
+                                    f.write(chunk)
+                    break
+
 
 
 def schedule_new(api, update):
@@ -27,13 +46,24 @@ def schedule_new(api, update):
         group = str(update[6]).lower().split(' ')[1]
     api.messages.send(peer_id=update[3], message=msce.parseGroup(group))
 
+def isAdmin(update):
+    settings = getSettings()
+    for admin in settings['admin_ids']:
+        if admin in str(update[3]):
+            return True
+    return False
 
 def actionManager(api, update, action):
     settings = getSettings()
     if action == 'schedule_new':
         schedule_new(api, update)
-    elif action == 'logs_send':
-        sender.sendDoc(api, update[3], 'logs.txt')
+    elif action == 'settings_get':
+        sender.sendDoc(api, update[3], 'actions.json')
+    elif action == 'settings_send':
+        if isAdmin(update):
+            saveDoc(api, update)
+        else:
+            api.messages.send(peer_id=update[3], message=settings['messages']['not_admin'])
     else:
         if action in settings['messages']:
             api.messages.send(peer_id=update[3], message=settings['messages'][action])
