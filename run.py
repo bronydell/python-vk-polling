@@ -28,10 +28,15 @@ def schedule_new(api, update):
 
 
 def actionManager(api, update, action):
+    settings = getSettings()
     if action == 'schedule_new':
         schedule_new(api, update)
     elif action == 'logs_send':
         sender.sendDoc(api, update[3], 'logs.txt')
+    else:
+        if action in settings['messages']:
+            api.messages.send(peer_id=update[3], message=settings['messages']['action'])
+
 
 
 def message(api, update):
