@@ -21,7 +21,11 @@ class LongPoolServer:
                 'Error with get request {}. Answers contains code: {}'.format(answer.url, answer.status_code))
 
 def getLongPoolServer(api):
-    answ = api.messages.getLongPollServer()
-    server = LongPoolServer(answ['server'], answ['key'], answ['ts'])
+    try:
+        answ = api.messages.getLongPollServer()
+        server = LongPoolServer(answ['server'], answ['key'], answ['ts'])
+    except Exception as ex:
+        print(ex.__str__())
+        return getLongPoolServer(api)
     return server
 
