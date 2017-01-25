@@ -5,9 +5,10 @@ import saver
 from vk_polling import VKPooler
 from vk_polling.VKPooler import Codes
 import msce_getter as msce
+import sender
 
 app_id = 5037590
-logging.basicConfig(level=logging.CRITICAL)
+logging.basicConfig(level=logging.ERROR, filename='logs.txt')
 
 
 def getSettings():
@@ -29,6 +30,8 @@ def schedule_new(api, update):
 def actionManager(api, update, action):
     if action == 'schedule_new':
         schedule_new(api, update)
+    elif action == 'logs_send':
+        sender.sendDoc(api, update[3], 'logs.txt')
 
 
 def message(api, update):

@@ -5,6 +5,12 @@
         "расписание"
       ],
       "action": "schedule_new"
+    },
+    {
+      "quotes": [
+        "логи"
+      ],
+      "action": "logs_send"
     }
   ]
 }
