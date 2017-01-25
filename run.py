@@ -10,6 +10,7 @@ import sender
 app_id = 5037590
 logging.basicConfig(level=logging.ERROR, filename='logs.txt')
 
+permissions = ['offline', 'messages', 'docs']
 
 def getSettings():
     try:
@@ -58,7 +59,7 @@ else:
 
 try:
     api = vk_requests.create_api(app_id=app_id, login=login,
-                                 password=password, scope=['offline', 'messages', 'documents'])
+                                 password=password, scope=permissions)
     if saver.openPref('me', 'login', None) is None:
         saver.savePref('me', 'login', login)
         saver.savePref('me', 'password', password)
