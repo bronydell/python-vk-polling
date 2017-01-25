@@ -35,7 +35,7 @@ def actionManager(api, update, action):
         sender.sendDoc(api, update[3], 'logs.txt')
     else:
         if action in settings['messages']:
-            api.messages.send(peer_id=update[3], message=settings['messages']['action'])
+            api.messages.send(peer_id=update[3], message=settings['messages'][action])
 
 
 
