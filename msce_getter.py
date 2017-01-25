@@ -21,7 +21,7 @@ def parseSubGroups(lesson, audience):
     else:
         return lesson + " || кабинет(кабинеты): " + rooms
 
-def parseGroup(group):
+def parseGroup(group, error):
     s = '                                                  \n'
     # API
     r = requests.get('http://s1.al3xable.me/method/getStudent?group={}'.format(group))
@@ -34,4 +34,4 @@ def parseGroup(group):
                 s = s + '                                                  \n'
         return s
     else:
-        return 'Либо такой группы нет, либо сервер упал, либо Тоха питух'
+        return error

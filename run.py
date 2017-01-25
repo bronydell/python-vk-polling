@@ -49,9 +49,11 @@ def question(api, update):
 
 def schedule_new(api, update):
     group = '17'
+
     if len(str(update[6]).lower().split(' ')) > 1:
         group = str(update[6]).lower().split(' ')[1]
-    api.messages.send(peer_id=update[3], message=msce.parseGroup(group))
+    api.messages.send(peer_id=update[3], message=msce.parseGroup(group,
+                                                    random.choice(getSettings()['messages']['schedule_not_exist'])))
 
 def isAdmin(update):
     settings = getSettings()
