@@ -7,6 +7,7 @@ from vk_polling import VKPooler
 from vk_polling.VKPooler import Codes
 import msce_getter as msce
 import sender
+import random
 
 app_id = 5037590
 
@@ -21,6 +22,8 @@ def getSettings():
         return None
     except Exception as ex:
         print(ex.__str__())
+
+
 
 
 def saveDoc(api, update):
@@ -39,6 +42,10 @@ def saveDoc(api, update):
                     break
 
 
+def question(api, update):
+    settings = getSettings()
+    api.messages.send(peer_id=update[3],
+                      message=random.choice(settings['messages']['possible']).format(str(random.randint(0, 100))))
 
 def schedule_new(api, update):
     group = '17'
@@ -59,14 +66,16 @@ def actionManager(api, update, action):
         schedule_new(api, update)
     elif action == 'settings_get':
         sender.sendDoc(api, update[3], 'actions.json')
+    elif action == 'random':
+        question(api, update)
     elif action == 'settings_send':
         if isAdmin(update):
             saveDoc(api, update)
         else:
-            api.messages.send(peer_id=update[3], message=settings['messages']['not_admin'])
+            api.messages.send(peer_id=update[3], message=random.choice(settings['messages']['not_admin']))
     else:
         if action in settings['messages']:
-            api.messages.send(peer_id=update[3], message=settings['messages'][action])
+            api.messages.send(peer_id=update[3], message=random.choice(settings['messages'][action]))
 
 
 
