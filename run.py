@@ -100,7 +100,7 @@ else:
 
 try:
     api = vk_requests.create_api(app_id=app_id, login=login,
-                                 password=password, scope=permissions)
+                                 password=password, scope=permissions, api_version='5.62')
     if saver.openPref('me', 'login', None) is None:
         saver.savePref('me', 'login', login)
         saver.savePref('me', 'password', password)
