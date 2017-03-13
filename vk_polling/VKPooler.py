@@ -2,7 +2,7 @@ from enum import Enum
 from vk_polling import Longpoolserver as poll
 import logging
 import traceback
-
+import time
 functions = {}
 
 def addHandler(code, function):
@@ -53,6 +53,7 @@ def startPooling(api):
                 for error in Errors:
                     if error.value == answ['error']:
                         logging.error(errors[error.value])
+                        time.sleep(1)
                         server = poll.getLongPoolServer(api)
             else:
                 for update in answ['updates']:
@@ -62,6 +63,7 @@ def startPooling(api):
                                 for function in functions[code.value]:
                                     function(api, update)
         except Exception as ex:
+            time.sleep(1)
             server = poll.getLongPoolServer(api)
             print(traceback.format_exc())
 
