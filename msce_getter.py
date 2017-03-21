@@ -19,7 +19,11 @@ def parseSubGroups(lesson, audience):
                   rooms[len(rooms) - 1] + "\n"
         return result
     else:
-        return lesson + " || кабинет(кабинеты): " + rooms
+        if type(rooms) is list:
+            return lesson + " || кабинет(кабинеты): " + rooms[0]
+        else:
+            return lesson + " || кабинет(кабинеты): " + rooms
+
 
 def parseGroup(group, error):
     s = '                                                  \n'
