@@ -84,6 +84,14 @@ def actionManager(api, update, action):
 def message(api, update):
     settings = getSettings()
     settings = settings['new_message']
+    if 'attach1_type' in update[-1]:
+        if update[-1]['attach1_type'] == 'sticker':
+            for setting in settings:
+                if 'stickers' in setting:
+                    for sticker in setting['stickers']:
+                        if sticker == '{}_{}'.format(update[-1]['attach1_product_id'], update[-1]['attach1']):
+                            actionManager(api, update, setting['action'])
+                            break
     for setting in settings:
         for quote in setting['quotes']:
             if str(update[6]).lower().startswith(quote):
